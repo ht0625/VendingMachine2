@@ -11,9 +11,9 @@ class MoneyController
   end
 
   def eject
-    @change = @deposit
+    change = @deposit
     @deposit = 0
-    @change
+    change
   end
 
   def sales(price)
