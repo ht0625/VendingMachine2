@@ -33,11 +33,11 @@ class VendingMachine
 
   def insert_drink(name, price)
     drink = Drink.new(name, price)
-    @drink_controller.stock_add(drink.name, drink.price)
+    @drink_controller.stock_add(drink.name.to_sym, drink.price)
   end
 
   def purchasable?(name)
-    (@money_controller.deposit >= @drink_controller.get_price(name)) && (@drink_controller.get_stock(name) >= 1)
+    (@money_controller.deposit >= @drink_controller.get_price(name.to_sym)) && (@drink_controller.get_stock(name.to_sym) >= 1)
   end
 
   def display_drinks_stock
@@ -46,9 +46,9 @@ class VendingMachine
 
   def sell_drink(name)
     if purchasable?(name)
-      price = @drink_controller.get_price(name)
+      price = @drink_controller.get_price(name.to_sym)
       @money_controller.sales(price)
-      @drink_controller.sell_drink(name)
+      @drink_controller.sell_drink(name.to_sym)
     end
     display_deposit
   end

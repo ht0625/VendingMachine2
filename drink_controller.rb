@@ -6,24 +6,24 @@ class DrinkController
   end
 
   def stock_add(name, price)
-    if @drinks.has_key?(name.to_sym)
-      @drinks[name.to_sym][:stock] += 1
+    if @drinks.has_key?(name)
+      @drinks[name][:stock] += 1
     else
-      @drinks[name.to_sym] = {price: price, stock: 5}
+      @drinks[name] = {price: price, stock: 5}
     end
     @drinks
   end
 
   def get_price(name)
-    @drinks[name.to_sym][:price]
+    @drinks[name][:price]
   end
 
   def get_stock(name)
-    @drinks[name.to_sym][:stock]
+    @drinks[name][:stock]
   end
 
   def sell_drink(name)
-    @drinks[name.to_sym][:stock] -= 1
+    @drinks[name][:stock] -= 1
   end
 
 end
