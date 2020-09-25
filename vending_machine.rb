@@ -4,11 +4,12 @@ require './money_controller.rb'
 require './drink.rb'
 require './money.rb'
 class VendingMachine
+
   def initialize
     @money_controller = MoneyController.new
     @drink_controller = DrinkController.new
   end
-  #Money
+
   def insert(name)
     money = Money.new(name)
     if money.valid?
@@ -17,31 +18,30 @@ class VendingMachine
       name
     end
   end
+
   def display_deposit
-    @money_controller.display_deposit
+    @money_controller.deposit
   end
+
   def get_eject
     @money_controller.eject
   end
-  #Drink
-  def insert_drink(name,price)
-    drink = Drink.new(name,price)
+
+  def get_sales_amount
+    @money_controller.sales_amount
+  end
+
+  def insert_drink(name, price)
+    drink = Drink.new(name, price)
     @drink_controller.stock_add(drink.name, drink.price)
   end
+
   def purchasable?(name)
-    if (display_deposit >= @drink_controller.get_price(name)) && (@drink_controller.get_stock(name) >= 1)
-      true
-    else
-      false
-    end
+    (@money_controller.deposit >= @drink_controller.get_price(name)) && (@drink_controller.get_stock(name) >= 1)
   end
 
   def display_drinks_stock
-    @drink_controller.display_drinks
-  end
-
-  def get_sales_amount
-    @money_controller.get_sales_amount
+    @drink_controller.drinks
   end
 
   def sell_drink(name)
@@ -51,6 +51,10 @@ class VendingMachine
       @drink_controller.sell_drink(name)
     end
     display_deposit
+  end
+
+  def purchasable_drink_names
+    @drink_controller.drinks.select{|_, info| info[:price] <= @money_controller.deposit && info[:stock] >= 1 }.keys
   end
 
 end
@@ -73,6 +77,7 @@ end
 #step2,4
 #ドリンク投入
 # vm.insert_drink("cola",120)
+# vm.insert_drink("redbull",220)
 
 #ドリンク在庫確認
 # vm.display_drinks_stock
@@ -85,4 +90,5 @@ end
 # vm.get_sales_amount
 
 #購入可能？
-#vm.purchasable?("cola")
+# vm.purchasable?("cola")
+# vm.purchasable_drink_names
